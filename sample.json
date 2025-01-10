@@ -1,0 +1,16 @@
+[{
+    "name":"DEEPA",
+    "age":25,
+    "city":"BANGALORE",
+    "amount": 1500
+},{
+    "name":"MADHU",
+    "age":"30",
+    "city":"MUMBAI",
+    "amount": 5500
+},{
+    "name":"SAVI",
+    "age":21,
+    "city":"KOCHI",
+    "amount": 2500
+}]
