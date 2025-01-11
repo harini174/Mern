@@ -1,12 +1,12 @@
-var express=require("express");
-const mongoose=require("mongoose");
-const {v4: uuidv4 } = require("uuid");//import uuid
+var express = require("express");
+const mongoose = require("mongoose");
+const { v4: uuidv4 } = require("uuid");//import uuid
 const cors = require("cors");
-const app=express();
+const app = express();
 //Middleware
 app.use(express.json())
 
-app.use('')//it avoid front end error
+app.use(cors())//it avoid front end error
 // const students=[{
 //     id:1,
 //     name:"Jaxson",
@@ -17,87 +17,86 @@ app.use('')//it avoid front end error
 //     age:19
 // }]
 //connecting db
-mongoose.connect("mongodb+srv://HA:harini@cluster0.m6cjk.mongodb.net/")
-    .then(()=>{console.log("Connected")});
+mongoose.connect("mongodb+srv://HA:harini@cluster0.m6cjk.mongodb.net/expense").then(() => { console.log("Connected") });
 //returns a promise(resolve or reject) 
 
 //creating schema
-const expenseSchema=new mongoose.Schema({
-    id:{type:String,required:true,unique:true},
-    title:{type:String,required:true},
-    amount:{type:Number,required:true}
+const expenseSchema = new mongoose.Schema({
+    id: { type: String, required: true, unique: true },
+    title: { type: String, required: true },
+    amount: { type: Number, required: true }
 });
 
 //model creation
-const Expenses=mongoose.model("Expenses",expenseSchema)
-app.get("/api/expenses",async(req,res)=>{
-    try{
-    const expenses = Expenses.find();
-    res.status(200).json(expenses);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
-    }catch(error){
-        res.status(500).json({message:"ERROR"});
+const Expenses = mongoose.model("Expenses", expenseSchema)
+app.get("/api/expenses", async (req, res) => {
+    try {
+        const expenses = Expenses.find();
+        res.status(200).json(expenses);
+    } catch (error) {
+        res.status(500).json({ message: "ERROR" });
     }
 });
-app.get("/api/expenses/:id",async(req,res)=>{
-    try{
-    const {id} = req.params;
-    const expenses=await Expenses.findOne({id});
-    if(!expenses){
-        res.status(404).json({message:"ERROR"});
-    }
-    res.status(200).json(expenses);
-}
-catch(err){
-    res.status(500).json({message:"error"});
-}
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
-   
-});
-
-app.post("/api/expenses",async(req,res)=>{ 
-    
-    const{title,amount}=req.body;
-    try{
-      const newExpense = new Expenses ({
-         id: uuidv4(),
-         title,//title:title are same
-         amount
-
-    });
-    const savedExpense = await newExpense.save()
-    res.status(200).json(savedExpense)
-    }
-    catch (err){
-    res.status(500).json({message:"ERROR IN CREATING EXPENSE"});
-
-}
-});
-app.put("/api/expenses/:id",async(req,res)=>{
-    const {id}=req.params;
-    const {title,amount}=req.body;
-    try{
-        const updateexpense=await Expenses.findOneAndUpdate({id},{title,amount});//new true creates a new data if the the id doesnt exist
-    if(!updateexpense){
-        return res.status(404).json({message:"Expense not found"})
-    }
-    res.status(200).json(updateexpense)
-}
-    catch(err){
-        res.status(500).json({message:err.message})
-    }
-
-});
-app.delete("/api/expenses/:id",async(req,res)=>{
-    const {id}=req.params;
-    try{
-        const deleteExpense=await Expenses.deleteOne({id});
-        if(!deleteExpense){
-            return res.status(404).json({message:"Expense not found"})
+app.get("/api/expenses/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const expenses = await Expenses.findOne({ id });
+        if (!expenses) {
+            res.status(404).json({ message: "ERROR" });
         }
-    res.status(200).json({message:"Expense deleted"})
+        res.status(200).json(expenses);
     }
-    catch(err){
-        res.status(500).json({message:err.message})
+    catch (err) {
+        res.status(500).json({ message: "error" });
+    }
+
+
+});
+
+app.post("/api/expenses", async (req, res) => {
+
+    const { title, amount } = req.body;
+    try {
+        const newExpense = new Expenses({
+            id: uuidv4(),
+            title,//title:title are same
+            amount
+
+        });
+        const savedExpense = await newExpense.save()
+        res.status(200).json(savedExpense)
+    }
+    catch (err) {
+        res.status(500).json({ message: "ERROR IN CREATING EXPENSE" });
+
+    }
+});
+app.put("/api/expenses/:id", async (req, res) => {
+    const { id } = req.params;
+    const { title, amount } = req.body;
+    try {
+        const updateexpense = await Expenses.findOneAndUpdate({ id }, { title, amount });//new true creates a new data if the the id doesnt exist
+        if (!updateexpense) {
+            return res.status(404).json({ message: "Expense not found" })
+        }
+        res.status(200).json(updateexpense)
+    }
+    catch (err) {
+        res.status(500).json({ message: err.message })
+    }
+
+});
+app.delete("/api/expenses/:id", async (req, res) => {
+    const { id } = req.params;
+    try {
+        const deleteExpense = await Expenses.deleteOne({ id });
+        if (!deleteExpense) {
+            return res.status(404).json({ message: "Expense not found" })
+        }
+        res.status(200).json({ message: "Expense deleted" })
+    }
+    catch (err) {
+        res.status(500).json({ message: err.message })
     }
 })
 
@@ -128,6 +127,6 @@ app.get("/api/students/:id",(req,res)=>{
 })
 
 */
-app.listen(3000,()=>{
+app.listen(3000, () => {
     console.log("Server is running on Port 3000")
 })
