@@ -1,10 +1,12 @@
 var express=require("express");
 const mongoose=require("mongoose");
 const {v4: uuidv4 } = require("uuid");//import uuid
+const cors = require("cors");
 const app=express();
 //Middleware
 app.use(express.json())
 
+app.use('')//it avoid front end error
 // const students=[{
 //     id:1,
 //     name:"Jaxson",

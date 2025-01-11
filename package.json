@@ -11,6 +11,7 @@
   "description": "",
   "dependencies": {
     "-": "^0.0.1",
+    "cors": "^2.8.5",
     "express": "^4.21.2",
     "g": "^2.0.1",
     "mongoose": "^8.9.4",
