@@ -15,9 +15,9 @@ app.use(express.json())
 //     age:19
 // }]
 //connecting db
-mongoose.connect("mongodb://localhost:27017/expense")
+mongoose.connect("mongodb+srv://HA:harini@cluster0.m6cjk.mongodb.net/")
     .then(()=>{console.log("Connected")});
-//returns a promise(resolve or reject)
+//returns a promise(resolve or reject) 
 
 //creating schema
 const expenseSchema=new mongoose.Schema({
